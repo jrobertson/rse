@@ -15,7 +15,7 @@ class Rse
   
   def initialize(package_basepath=nil, host: '', port: '61000', 
                  debug: false, loghost: 'localhost', reghost: 'localhost', 
-                 spshost: 'localhost')
+                 spshost: 'localhost', app_rsf: nil)
 
     @host, @port, @debug = host, port, debug
 
@@ -23,7 +23,7 @@ class Rse
     reg = RemoteDwsRegistry.new domain: reghost   
 
     @rs = rs = RSFServices.new reg, 
-        package_basepath: package_basepath, log: log
+        package_basepath: package_basepath, log: log, app_rsf: app_rsf
     
     sps = SPSSub.new host: spshost
        
