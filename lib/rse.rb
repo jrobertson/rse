@@ -10,20 +10,23 @@ require 'remote_dwsregistry'
 require 'spspublog_drb_client'
 
 
-
 class Rse
+  using ColouredText
   
   def initialize(package_basepath=nil, host: '', port: '61000', 
-                 debug: false, loghost: 'localhost', reghost: 'localhost', 
-                 spshost: 'localhost', app_rsf: nil)
+                 debug: false, loghost: 'localhost', logport: '9090', 
+                 reghost: 'localhost', spshost: 'localhost', app_rsf: nil)
 
     @host, @port, @debug = host, port, debug
 
-    log = SPSPubLogDRbClient.new host: loghost        
+    puts 'before spspublog'.info if @debug
+    log = SPSPubLogDRbClient.new host: loghost, port: logport
+    
+    puts 'before reg'.info if @debug
     reg = RemoteDwsRegistry.new domain: reghost   
 
-    @rs = rs = RSFServices.new reg, 
-        package_basepath: package_basepath, log: log, app_rsf: app_rsf
+    @rs = rs = RSFServices.new reg, package_basepath: package_basepath, 
+        log: log, app_rsf: app_rsf, debug: debug
     
     sps = SPSSub.new host: spshost
        
