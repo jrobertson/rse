@@ -44,8 +44,9 @@ module Rse
 
     def start()
       puts 'starting ...'
-      puts "druby://#{@host}:#{@port}"
-      DRb.start_service "druby://#{@host}:#{@port}", @rs
+      puts "druby://#{@host.to_s}:#{@port}"
+
+      DRb.start_service "druby://" + @host.to_s + ':' + @port, @rs
       DRb.thread.join
 
     end
@@ -143,8 +144,7 @@ module RseProxy
     def run_job(package, job, params={}, *args)
 
       if @log then
-        @log.info "package: %s, job: %s, " +
-            "params: %s, args: %s" % [package, job, params, args]
+        @log.info "package: %s, job: %s, params: %s, args: %s" % [package, job, params, args]
       end
 
       #we pass in the job to determine the server
